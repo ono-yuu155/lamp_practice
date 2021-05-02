@@ -1,4 +1,7 @@
 <?php
+
+//商品削除の処理
+
 require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
@@ -14,13 +17,15 @@ $db = get_db_connect();
 
 $user = get_login_user($db);
 
+//ユーザータイプが管理者ではない時ログインページにリダイレクト
 if(is_admin($user) === false){
   redirect_to(LOGIN_URL);
 }
 
+//postから送られてくる値を変数に格納
 $item_id = get_post('item_id');
 
-
+//登録した商品を削除する関数
 if(destroy_item($db, $item_id) === true){
   set_message('商品を削除しました。');
 } else {

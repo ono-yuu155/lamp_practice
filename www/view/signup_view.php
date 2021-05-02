@@ -6,10 +6,15 @@
   <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'signup.css'); ?>">
 </head>
 <body>
+
+<!--新規登録ページのview-->
+
+  <!--ヘッダー部分のHTMLファイルを読み込み-->
   <?php include VIEW_PATH . 'templates/header.php'; ?>
   <div class="container">
     <h1>ユーザー登録</h1>
 
+  
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
     <form method="post" action="signup_process.php" class="signup_form mx-auto">

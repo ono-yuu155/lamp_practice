@@ -22,7 +22,9 @@ define('CART_URL', '/cart.php');
 define('FINISH_URL', '/finish.php');
 define('ADMIN_URL', '/admin.php');
 
+//ユーザー新規登録情報の正規表現定数
 define('REGEXP_ALPHANUMERIC', '/\A[0-9a-zA-Z]+\z/');
+
 define('REGEXP_POSITIVE_INTEGER', '/\A([1-9][0-9]*|0)\z/');
 
 
@@ -31,6 +33,7 @@ define('USER_NAME_LENGTH_MAX', 100);
 define('USER_PASSWORD_LENGTH_MIN', 6);
 define('USER_PASSWORD_LENGTH_MAX', 100);
 
+//ユーザーのタイプを表す 1は管理者ユーザー 2は一般ユーザー
 define('USER_TYPE_ADMIN', 1);
 define('USER_TYPE_NORMAL', 2);
 
@@ -40,6 +43,7 @@ define('ITEM_NAME_LENGTH_MAX', 100);
 define('ITEM_STATUS_OPEN', 1);
 define('ITEM_STATUS_CLOSE', 0);
 
+//商品管理ページ登録の商品のステータス
 define('PERMITTED_ITEM_STATUSES', array(
   'open' => 1,
   'close' => 0,

@@ -1,4 +1,7 @@
 <?php
+
+//カートに商品を追加報告ページ
+
 require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';

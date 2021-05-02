@@ -2,6 +2,11 @@
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
+/**
+ * カートの中身を全て取得する関数
+ * 引数でdbハンドル、ユーザーIDを取得する。
+ * returnで$sqlを返すことで結果を配列に格納できる。
+ */
 function get_user_carts($db, $user_id){
   $sql = "
     SELECT
@@ -76,6 +81,10 @@ function insert_cart($db, $user_id, $item_id, $amount = 1){
   return execute_query($db, $sql);
 }
 
+/**
+ * cartの指定した商品の購入数を変更する
+ * 引数で抽出条件であるcart_id,変更したい値(SET)で指定しているamoutを使用する
+ */
 function update_cart_amount($db, $cart_id, $amount){
   $sql = "
     UPDATE
@@ -89,6 +98,10 @@ function update_cart_amount($db, $cart_id, $amount){
   return execute_query($db, $sql);
 }
 
+/**
+ * cartの中身を削除する関数
+ * 実行処理を結果としている
+ */
 function delete_cart($db, $cart_id){
   $sql = "
     DELETE FROM
@@ -101,6 +114,11 @@ function delete_cart($db, $cart_id){
   return execute_query($db, $sql);
 }
 
+/**
+ * validate_cart_purchase関数はカートの検証をしている
+ * update_item_stock関数がfalseのときはエラーメッセージ
+ * もしTRUEだった場合はカートの中身を削除(購入完了)
+ */
 function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
@@ -118,6 +136,9 @@ function purchase_carts($db, $carts){
   delete_user_carts($db, $carts[0]['user_id']);
 }
 
+/**
+ * ユーザーが購入した商品をカートから削除する
+ */
 function delete_user_carts($db, $user_id){
   $sql = "
     DELETE FROM
@@ -126,10 +147,13 @@ function delete_user_carts($db, $user_id){
       user_id = {$user_id}
   ";
 
-  execute_query($db, $sql);
+  return execute_query($db, $sql);
 }
 
-
+/**
+ * カートに入っている商品の合計金額を計算し結果を返す関数
+ * 引数は商品のカート情報
+ */
 function sum_carts($carts){
   $total_price = 0;
   foreach($carts as $cart){
@@ -138,6 +162,14 @@ function sum_carts($carts){
   return $total_price;
 }
 
+/**
+ * カートの購入を検証する関数
+ * 1,if文でカートに入っている商品の個数が０個以下のときはfalseを返す
+ * 2,is_open関数で商品ステータスが1の時結果を返すfalseの場合はエラー文
+ * 3,stock(在庫)が個数より少なかったらエラー文
+ * 4,has_error関数で関数がTRUEの時はfalseを返す
+ * 5,それ以外はTRUEを返す
+ */
 function validate_cart_purchase($carts){
   if(count($carts) === 0){
     set_error('カートに商品が入っていません。');

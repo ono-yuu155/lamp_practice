@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * 関数fetch_query,fetchall_query,execute_queryの第３引数の意味
+ * executeメソッドの引数にはsql文で？などのプレースホルダ
+ * などがあった場合にその値をexecuteの引数に配列の形で指定する
+ */
+
 function get_db_connect(){
   // MySQL用のDSN文字列
   $dsn = 'mysql:dbname='. DB_NAME .';host='. DB_HOST .';charset='.DB_CHARSET;
@@ -16,6 +22,9 @@ function get_db_connect(){
   return $dbh;
 }
 
+/**
+ * prepareでsql文の実行準備からfetchで取得するまでを関数化している
+ */
 function fetch_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -27,6 +36,7 @@ function fetch_query($db, $sql, $params = array()){
   return false;
 }
 
+//すべての行のデータを取得
 function fetch_all_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -38,6 +48,10 @@ function fetch_all_query($db, $sql, $params = array()){
   return false;
 }
 
+
+/**
+ * sql文の実行処理を取得
+ */
 function execute_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
