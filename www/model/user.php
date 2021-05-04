@@ -6,7 +6,7 @@ require_once MODEL_PATH . 'db.php';
  * ユーザーIDで抽出してデータを取得する
  * リターンでsql文をfetchで情報を取得している
  */
-function get_user($db, $user_id){
+function get_user($db){
   $sql = "
     SELECT
       user_id, 
@@ -16,18 +16,18 @@ function get_user($db, $user_id){
     FROM
       users
     WHERE
-      user_id = {$user_id}
+      user_id = ?
     LIMIT 1
   ";
 
-  return fetch_query($db, $sql);
+  return fetch_query($db,$sql,$user_id);
 }
 
 /**
  * 抽出したユーザー名でユーザーの情報を取得する関数
  * リターンでsql文をfetchで情報を取得している
  */
-function get_user_by_name($db, $name){
+function get_user_by_name($db){
   $sql = "
     SELECT
       user_id, 
@@ -37,11 +37,11 @@ function get_user_by_name($db, $name){
     FROM
       users
     WHERE
-      name = '{$name}'
+      name = ?
     LIMIT 1
   ";
 
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql,$name);
 }
 
 /**
@@ -140,13 +140,15 @@ function is_valid_password($password, $password_confirmation){
   return $is_valid;
 }
 
-function insert_user($db, $name, $password){
+/**
+ * sqlインジェクションの対策のため?で値をバインド
+ */
+function insert_user($db){
   $sql = "
     INSERT INTO
       users(name, password)
-    VALUES ('{$name}', '{$password}');
+    VALUES (? , ?);
   ";
-
-  return execute_query($db, $sql);
+  return execute_query($db, $sql,$name,$password);
 }
 

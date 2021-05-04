@@ -1,9 +1,7 @@
 <?php
 
 /**
- * 関数fetch_query,fetchall_query,execute_queryの第３引数の意味
- * executeメソッドの引数にはsql文で？などのプレースホルダ
- * などがあった場合にその値をexecuteの引数に配列の形で指定する
+ * 
  */
 
 function get_db_connect(){

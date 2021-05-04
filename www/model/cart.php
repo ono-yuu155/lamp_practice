@@ -3,11 +3,18 @@ require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
 /**
+ * sql文の抽出条件に変数を入れているのはsqlインジェクションの課題のため
+ * WHEREの所を?などのプレースホルダを使わず変数などのを使用してしまうと
+ * 
+ */
+
+
+/**
  * カートの中身を全て取得する関数
  * 引数でdbハンドル、ユーザーIDを取得する。
  * returnで$sqlを返すことで結果を配列に格納できる。
  */
-function get_user_carts($db, $user_id){
+function get_user_carts($db){
   $sql = "
     SELECT
       items.item_id,
@@ -26,12 +33,12 @@ function get_user_carts($db, $user_id){
     ON
       carts.item_id = items.item_id
     WHERE
-      carts.user_id = {$user_id}
+      carts.user_id = 
   ";
-  return fetch_all_query($db, $sql);
+  return fetch_all_query($db, $sql,$user_id);
 }
 
-function get_user_cart($db, $user_id, $item_id){
+function get_user_cart($db){
   $sql = "
     SELECT
       items.item_id,
@@ -50,12 +57,12 @@ function get_user_cart($db, $user_id, $item_id){
     ON
       carts.item_id = items.item_id
     WHERE
-      carts.user_id = {$user_id}
+      carts.user_id = ?
     AND
-      items.item_id = {$item_id}
+      items.item_id = ?
   ";
 
-  return fetch_query($db, $sql);
+  return fetch_query($db, $sql,$user_id,$item_id);
 
 }
 
@@ -67,7 +74,7 @@ function add_cart($db, $user_id, $item_id ) {
   return update_cart_amount($db, $cart['cart_id'], $cart['amount'] + 1);
 }
 
-function insert_cart($db, $user_id, $item_id, $amount = 1){
+function insert_cart($db){
   $sql = "
     INSERT INTO
       carts(
@@ -75,43 +82,43 @@ function insert_cart($db, $user_id, $item_id, $amount = 1){
         user_id,
         amount
       )
-    VALUES({$item_id}, {$user_id}, {$amount})
+    VALUES(?, ?, ?)
   ";
 
-  return execute_query($db, $sql);
+  return execute_query($db, $sql,$item_id,$user_id,$amount=1);
 }
 
 /**
  * cartの指定した商品の購入数を変更する
  * 引数で抽出条件であるcart_id,変更したい値(SET)で指定しているamoutを使用する
  */
-function update_cart_amount($db, $cart_id, $amount){
+function update_cart_amount($db){
   $sql = "
     UPDATE
       carts
     SET
-      amount = {$amount}
+      amount = ?
     WHERE
-      cart_id = {$cart_id}
+      cart_id = ?
     LIMIT 1
   ";
-  return execute_query($db, $sql);
+  return execute_query($db, $sql,$amount,$cart_id);
 }
 
 /**
  * cartの中身を削除する関数
  * 実行処理を結果としている
  */
-function delete_cart($db, $cart_id){
+function delete_cart($db){
   $sql = "
     DELETE FROM
       carts
     WHERE
-      cart_id = {$cart_id}
+      cart_id = ?
     LIMIT 1
   ";
 
-  return execute_query($db, $sql);
+  return execute_query($db, $sql,$cart_id);
 }
 
 /**
@@ -139,15 +146,15 @@ function purchase_carts($db, $carts){
 /**
  * ユーザーが購入した商品をカートから削除する
  */
-function delete_user_carts($db, $user_id){
+function delete_user_carts($db){
   $sql = "
     DELETE FROM
       carts
     WHERE
-      user_id = {$user_id}
+      user_id = ?
   ";
 
-  return execute_query($db, $sql);
+  return execute_query($db, $sql,$user_id);
 }
 
 /**

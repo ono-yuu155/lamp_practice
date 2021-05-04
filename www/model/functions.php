@@ -1,5 +1,9 @@
 <?php
 
+//??セッションの一覧の流れ
+
+
+
 /**
  * var_dumpの結果を取得
  */
@@ -64,12 +68,16 @@ function set_session($name, $value){
   $_SESSION[$name] = $value;
 }
 
-//エラーの処理をセッションに格納
+/**
+ * エラーメッセージをセッション変数に格納
+ */
 function set_error($error){
   $_SESSION['__errors'][] = $error;
 }
 
-//
+/**
+ * set_errorに格納されたエラーメッセージを配列に格納して最後に出す
+ */
 function get_errors(){
   $errors = get_session('__errors');
   if($errors === ''){
@@ -84,10 +92,16 @@ function has_error(){
   return isset($_SESSION['__errors']) && count($_SESSION['__errors']) !== 0;
 }
 
+/**
+ * メッセージセッション変数に格納
+ */
 function set_message($message){
   $_SESSION['__messages'][] = $message;
 }
 
+/**
+ * get_messageに格納されたメッセージを配列に格納して最後に出す
+ */
 function get_messages(){
   $messages = get_session('__messages');
   if($messages === ''){
