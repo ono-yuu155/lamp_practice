@@ -2,11 +2,7 @@
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
-/**
- * sql文の抽出条件に変数を入れているのはsqlインジェクションの課題のため
- * WHEREの所を?などのプレースホルダを使わず変数などのを使用してしまうと
- * 
- */
+
 
 
 /**
@@ -33,7 +29,7 @@ function get_user_carts($db){
     ON
       carts.item_id = items.item_id
     WHERE
-      carts.user_id = 
+      carts.user_id = ?
   ";
   return fetch_all_query($db, $sql,$user_id);
 }
@@ -62,7 +58,7 @@ function get_user_cart($db){
       items.item_id = ?
   ";
 
-  return fetch_query($db, $sql,$user_id,$item_id);
+  return fetch_query($db, $sql,[$user_id,$item_id]);
 
 }
 
@@ -85,12 +81,12 @@ function insert_cart($db){
     VALUES(?, ?, ?)
   ";
 
-  return execute_query($db, $sql,$item_id,$user_id,$amount=1);
+  return execute_query($db, $sql,[$item_id,$user_id,$amount]);
 }
 
 /**
  * cartの指定した商品の購入数を変更する
- * 引数で抽出条件であるcart_id,変更したい値(SET)で指定しているamoutを使用する
+ * 引数で抽出条件であるcart_id,変更したい値(SET)で指定しているamountを使用する
  */
 function update_cart_amount($db){
   $sql = "
@@ -102,7 +98,7 @@ function update_cart_amount($db){
       cart_id = ?
     LIMIT 1
   ";
-  return execute_query($db, $sql,$amount,$cart_id);
+  return execute_query($db, $sql,[$amount,$cart_id]);
 }
 
 /**

@@ -109,7 +109,7 @@ function insert_item($db){
     VALUES(?, ?, ?, ?, ?);
   ";
 
-  return execute_query($db, $sql,$name,$price,$stock,$filename,$status_value);
+  return execute_query($db, $sql,[$name,$price,$stock,$filename,$status_value]);
 }
 
 /**
@@ -146,7 +146,7 @@ function update_item_stock($db){
     LIMIT 1
   ";
   
-  return execute_query($db, $sql,$stock,$item_id);
+  return execute_query($db, $sql,[$stock,$item_id]);
 }
 
 /**

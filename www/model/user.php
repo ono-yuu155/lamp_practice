@@ -20,7 +20,7 @@ function get_user($db){
     LIMIT 1
   ";
 
-  return fetch_query($db,$sql,$user_id);
+  return fetch_query($db,$sql,[$user_id]);
 }
 
 /**
@@ -41,7 +41,7 @@ function get_user_by_name($db){
     LIMIT 1
   ";
 
-  return fetch_query($db, $sql,$name);
+  return fetch_query($db, $sql,[$name]);
 }
 
 /**
@@ -66,7 +66,7 @@ function login_as($db, $name, $password){
 function get_login_user($db){
   $login_user_id = get_session('user_id');
 
-  return get_user($db, $login_user_id);
+  return get_user($db);
 }
 
 /**
@@ -77,7 +77,7 @@ function regist_user($db, $name, $password, $password_confirmation) {
     return false;
   }
   
-  return insert_user($db, $name, $password);
+  return insert_user($db);
 }
 
 /**
@@ -149,6 +149,6 @@ function insert_user($db){
       users(name, password)
     VALUES (? , ?);
   ";
-  return execute_query($db, $sql,$name,$password);
+  return execute_query($db, $sql,[$name,$password]);
 }
 
