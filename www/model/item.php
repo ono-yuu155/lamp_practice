@@ -6,7 +6,7 @@ require_once MODEL_PATH . 'db.php';
 /**
  * item_idを抽出条件にデータ１つずつ取得する
  */
-function get_item($db){
+function get_item($db, $item_id){
   $sql = "
     SELECT
       item_id, 
@@ -21,7 +21,7 @@ function get_item($db){
       item_id = ?
   ";
 
-  return fetch_query($db, $sql,$item_id);
+  return fetch_query($db, $sql,[$item_id]);
 }
 
 /**
@@ -65,7 +65,6 @@ function get_open_items($db){
 /**
  * 1,ファイルアップロード処理を変数化
  * 2,validate_item関数で商品の新規追加項目がfalseだった場合falseを返す
- * 3,
  */
 function regist_item($db, $name, $price, $stock, $status, $image){
   $filename = get_upload_filename($image);
@@ -95,7 +94,7 @@ function regist_item_transaction($db, $name, $price, $stock, $status, $image, $f
 /**
  * 商品管理ページに登録する商品の処理
  */
-function insert_item($db){
+function insert_item($db, $name, $price, $stock, $filename, $status){
   $status_value = PERMITTED_ITEM_STATUSES[$status];
   $sql = "
     INSERT INTO
@@ -116,26 +115,26 @@ function insert_item($db){
  * LIMIT1とは取得するデータの行数のこと。
  * ステータス変更の処理
  */
-function update_item_status($db){
+function update_item_status($db, $item_id, $status){
   $sql = "
     UPDATE
       items
     SET
-      status = {$status}
+      status = ?
     WHERE
       item_id = ?
     
     LIMIT 1
   ";
   
-  return execute_query($db, $sql,$item_id);
+  return execute_query($db, $sql,[$status, $item_id]);
 }
 
 /**
  * update文
  * 追加した商品の在庫の数を変更する処理
  */
-function update_item_stock($db){
+function update_item_stock($db, $item_id, $stock){
   $sql = "
     UPDATE
       items
@@ -146,7 +145,7 @@ function update_item_stock($db){
     LIMIT 1
   ";
   
-  return execute_query($db, $sql,[$stock,$item_id]);
+  return execute_query($db, $sql,[$stock, $item_id]);
 }
 
 /**
@@ -173,7 +172,7 @@ function destroy_item($db, $item_id){
 /**
  * 登録した商品を削除するsql文
  */
-function delete_item($db){
+function delete_item($db, $item_id){
   $sql = "
     DELETE FROM
       items
@@ -182,7 +181,7 @@ function delete_item($db){
     LIMIT 1
   ";
   
-  return execute_query($db, $sql,$item_id);
+  return execute_query($db, $sql,[$item_id]);
 }
 
 

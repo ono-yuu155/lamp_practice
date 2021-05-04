@@ -6,7 +6,7 @@ require_once MODEL_PATH . 'db.php';
  * ユーザーIDで抽出してデータを取得する
  * リターンでsql文をfetchで情報を取得している
  */
-function get_user($db){
+function get_user($db, $user_id){
   $sql = "
     SELECT
       user_id, 
@@ -27,7 +27,7 @@ function get_user($db){
  * 抽出したユーザー名でユーザーの情報を取得する関数
  * リターンでsql文をfetchで情報を取得している
  */
-function get_user_by_name($db){
+function get_user_by_name($db, $name){
   $sql = "
     SELECT
       user_id, 
@@ -66,7 +66,7 @@ function login_as($db, $name, $password){
 function get_login_user($db){
   $login_user_id = get_session('user_id');
 
-  return get_user($db);
+  return get_user($db, $login_user_id);
 }
 
 /**
@@ -77,7 +77,7 @@ function regist_user($db, $name, $password, $password_confirmation) {
     return false;
   }
   
-  return insert_user($db);
+  return insert_user($db, $name, $password);
 }
 
 /**
@@ -143,7 +143,7 @@ function is_valid_password($password, $password_confirmation){
 /**
  * sqlインジェクションの対策のため?で値をバインド
  */
-function insert_user($db){
+function insert_user($db, $name, $password){
   $sql = "
     INSERT INTO
       users(name, password)
