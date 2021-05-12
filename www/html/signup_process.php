@@ -39,6 +39,14 @@ try{
   set_error('ユーザー登録に失敗しました。');
   redirect_to(SIGNUP_URL);
 }
+
+//POSTから送られてきたトークンがセッションに保存されているトークンと等しいかを調べる関数
+//falseだったときにはエラー分を表示しリダイレクトでログインページに戻す
+if (is_valid_csrf_token(get_post('csrf_token')) === false) {
+  set_error('アクセスが正しくありません');
+  redirect_to(LOGIN_URL);
+}
+
 //登録完了のメッセージをセッションに格納
 set_message('ユーザー登録が完了しました。');
 //新規登録情報が正しい場合、データベースのユーザー情報を返す

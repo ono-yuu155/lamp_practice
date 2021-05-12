@@ -40,5 +40,13 @@ set_message('ログインしました。');
 if ($user['type'] === USER_TYPE_ADMIN){
   redirect_to(ADMIN_URL);
 }
+
+//POSTから送られてきたトークンがセッションに保存されているトークンと等しいかを調べる関数
+//falseだったときにはエラー分を表示しリダイレクトでログインページに戻す
+if (is_valid_csrf_token(get_post('csrf_token')) === false) {
+  set_error('アクセスが正しくありません');
+  redirect_to(LOGIN_URL);
+}
+
 //タイプ２(一般ユーザー)だった場合は商品一覧ページにリダイレクト
 redirect_to(HOME_URL);

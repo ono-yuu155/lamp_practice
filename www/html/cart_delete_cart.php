@@ -21,6 +21,13 @@ $user = get_login_user($db);
 //postで送られてきたcart_idを変数に格納
 $cart_id = get_post('cart_id');
 
+//POSTから送られてきたトークンがセッションに保存されているトークンと等しいかを調べる関数
+//falseだったときにはエラー分を表示しリダイレクトでログインページに戻す
+if (is_valid_csrf_token(get_post('csrf_token')) === false) {
+  set_error('アクセスが正しくありません');
+  redirect_to(LOGIN_URL);
+}
+
 //カートの中身を削除する
 if(delete_cart($db, $cart_id)){
   set_message('カートを削除しました。');

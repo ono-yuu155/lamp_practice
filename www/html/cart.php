@@ -26,5 +26,8 @@ $carts = get_user_carts($db, $user['user_id']);
 //ユーザーのカートの合計金額を変数に格納
 $total_price = sum_carts($carts);
 
+//生成したトークンを変数に格納　元となるページのためこのファイルにのみこの関数を実行する
+$token = get_csrf_token();
+
 
 include_once VIEW_PATH . 'cart_view.php';

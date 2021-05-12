@@ -22,5 +22,8 @@ $user = get_login_user($db);
 //ステータスが１の商品を取得
 $items = get_open_items($db);
 
+//生成したトークンを変数に格納　元となるページのためこのファイルにのみこの関数を実行する
+$token = get_csrf_token();
+
 //viewファイル読み込み
 include_once VIEW_PATH . 'index_view.php';

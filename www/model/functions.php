@@ -62,14 +62,14 @@ function get_session($name){
 }
 
 /**
- * セッション変数に変数の値を保存する??
+ * セッション変数に名前の値を追加
  */
 function set_session($name, $value){
   $_SESSION[$name] = $value;
 }
 
 /**
- * エラーメッセージをセッション変数に格納
+ * セッション変数の配列にエラー文を格納
  */
 function set_error($error){
   $_SESSION['__errors'][] = $error;
@@ -130,6 +130,9 @@ function get_upload_filename($file){
   return get_random_string() . '.' . $ext;
 }
 
+/**
+ * ランダムな文字列を生成
+ */
 function get_random_string($length = 20){
   return substr(base_convert(hash('sha256', uniqid()), 16, 36), 0, $length);
 }
@@ -197,8 +200,27 @@ function is_valid_upload_image($image){
   return true;
 }
 
+//エスケープ処理関数
 function h($str){
   return htmlspecialchars($str,ENT_QUOTES,'UTF-8');
 }
 
+// トークンの生成
+function get_csrf_token(){
+  // get_random_string()はユーザー定義関数。
+  $token = get_random_string(30);
+  // set_session()はユーザー定義関数。
+  set_session('csrf_token', $token);
+  return $token;
+}
+
+// トークンのチェック
+function is_valid_csrf_token($token){
+  if($token === '') {
+    return false;
+  }
+  // get_session()はユーザー定義関数
+  // returnでTRUEを返している
+  return $token === get_session('csrf_token');
+}
 

@@ -18,14 +18,23 @@ $db = get_db_connect();
 
 $user = get_login_user($db);
 
+
 //ユーザータイプが管理者ではない時ログインページにリダイレクト
 if(is_admin($user) === false){
-  redirect_to(LOGIN_URL);
+  redirect_to(LOGOUT_URL);
 }
 
 //POSTで送られてきた値を取得
 $item_id = get_post('item_id');
 $changes_to = get_post('changes_to');
+
+
+//POSTから送られてきたトークンがセッションに保存されているトークンと等しいかを調べる関数
+//falseだったときにはエラー分を表示しリダイレクトでログインページに戻す
+if (is_valid_csrf_token(get_post('csrf_token')) === false) {
+  set_error('アクセスが正しくありません');
+  redirect_to(LOGIN_URL);
+}
 
 //$change_toの値がopenだったら非公開->公開に変更処理を実行、closeだったら公開->非公開に実行する
 if($changes_to === 'open'){
