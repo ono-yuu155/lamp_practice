@@ -119,6 +119,7 @@ function delete_cart($db, $cart_id){
  * update_item_stock関数がfalseのときはエラーメッセージ
  * もしTRUEだった場合はカートの中身を削除(購入完了)
  */
+//updateの関数は定義されているのか？  
 function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
