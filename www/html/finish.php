@@ -20,11 +20,12 @@ $user = get_login_user($db);
 //ユーザーのカート情報を取得
 $carts = get_user_carts($db, $user['user_id']);
 
-//関数がTRUEだったら商品が購入されカートから商品が削除される
+//関数がTRUEだったら商品が購入されカートから商品が購入されるため削除される
 if(purchase_carts($db, $carts) === false){
   set_error('商品が購入できませんでした。');
   redirect_to(CART_URL);
-} 
+}
+
 //カートに入っている商品の値段の合計
 $total_price = sum_carts($carts);
 

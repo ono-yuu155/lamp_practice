@@ -185,8 +185,9 @@ function delete_item($db, $item_id){
 }
 
 
-// 非DB
-//商品のステータスが1の時結果を返す
+/**
+ * 商品のステータスが1の時TRUEを返す
+ */
 function is_open($item){
   return $item['status'] === 1;
 }

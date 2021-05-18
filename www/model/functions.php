@@ -87,7 +87,9 @@ function get_errors(){
   return $errors;
 }
 
-//エラーメッセージが0より多いときに結果を返す
+/**
+ * エラーメッセージが0と等しくなかったら = エラーのメッセージがあったらTRUEを返す
+ */
 function has_error(){
   return isset($_SESSION['__errors']) && count($_SESSION['__errors']) !== 0;
 }
