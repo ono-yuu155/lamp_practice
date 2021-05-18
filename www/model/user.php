@@ -141,7 +141,7 @@ function is_valid_password($password, $password_confirmation){
 }
 
 /**
- * sqlインジェクションの対策のため?で値をバインド
+ * ユーザー情報の追加
  */
 function insert_user($db, $name, $password){
   $sql = "
