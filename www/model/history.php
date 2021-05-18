@@ -27,13 +27,13 @@ function user_history($db, $user_id){
 }
 
 //全ユーザーの購入履歴を取得
-function admin_history($db){
+function admin_history($db) {
     $sql = "
-    SELECT 
+    SELECT
         buy_history.order_number,
         buy_history.buy_update_time,
         SUM(buy_details.price * buy_details.amount) AS total
-    FROM 
+    FROM
         buy_history
     JOIN
         buy_details
@@ -45,4 +45,6 @@ function admin_history($db){
         buy_update_time DESC
     ";
     return fetch_all_query($db, $sql);
+    
 }
+

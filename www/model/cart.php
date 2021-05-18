@@ -129,6 +129,7 @@ function delete_cart($db, $cart_id){
 /**
  * カートに入っている商品の購入処理
  * 処理がTRUEだった場合はカートの中身を削除
+ * 購入履歴情報明細情報を追加　INSERT文のタイミング
  */
 function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
@@ -137,8 +138,15 @@ function purchase_carts($db, $carts){
   //商品を購入後商品購入履歴、詳細データを追加
   $db->beginTransaction();
   try {
+    
+    insert_buy_history($db,$carts[0]['user_id']);
+    $order_number = $db->lastInsertID();
   
   foreach($carts as $cart){
+
+    //購入する商品が1つの商品のみとは限らないためforeach文の中に記述
+    insert_buy_detail($db, $order_number, $cart['item_id'], $cart['price'], $cart['amount']);
+
     if(update_item_stock(
       $db, 
       $cart['item_id'], 
@@ -147,12 +155,6 @@ function purchase_carts($db, $carts){
         set_error($cart['name'] . 'の購入に失敗しました。');
         }
       }
-
-    //購入履歴情報、購入明細情報の追加
-    insert_buy_history($db,$carts[0]['user_id']);
-    $order_number = $db->lastInsertID();
-
-    insert_buy_detail($db, $order_number, $cart['item_id'], $cart['price'], $cart['amount']);
 
     delete_user_carts($db, $carts[0]['user_id']);
 

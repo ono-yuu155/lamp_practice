@@ -24,3 +24,20 @@ function user_details($db, $order_number) {
     ";
         return fetch_all_query($db, $sql, [$order_number]);
 }
+
+//購入明細の該当の購入履歴の表示
+function user_history_details($db, $order_number) {
+    $sql = "
+    SELECT
+        order_number,
+        price,
+        amount,
+        buy_update_time
+    FROM
+        buy_details
+    WHERE
+        order_number = ?
+    ";
+        return fetch_all_query($db, $sql, [$order_number]);
+}
+
