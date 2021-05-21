@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'login.css'); ?>">
 </head>
 <body>
+
+<!--ログインページのview-->
   <?php include VIEW_PATH . 'templates/header.php'; ?>
   <div class="container">
     <h1>ログイン</h1>
@@ -22,6 +24,7 @@
         <input type="password" name="password" id="password" class="form-control">
       </div>
       <input type="submit" value="ログイン" class="btn btn-primary">
+      <input type="hidden" name="csrf_token" value="<?php print $token; ?>"> 
     </form>
   </div>
 </body>

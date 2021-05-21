@@ -7,18 +7,21 @@
     <div class="collapse navbar-collapse" id="headerNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="<?php print(CART_URL);?>">カート</a>
+          <a class="nav-link" href="<?php print h((CART_URL));?>">カート</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?php print(LOGOUT_URL);?>">ログアウト</a>
+          <a class="nav-link" href="<?php print h((LOGOUT_URL));?>">ログアウト</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?php print h((HISTORY_URL));?>">購入履歴</a>
         </li>
         <?php if(is_admin($user)){ ?>
           <li class="nav-item">
-            <a class="nav-link" href="<?php print(ADMIN_URL);?>">管理</a>
+            <a class="nav-link" href="<?php print h((ADMIN_URL));?>">管理</a>
           </li>
         <?php } ?>
       </ul>
     </div>
   </nav>
-  <p>ようこそ、<?php print($user['name']); ?>さん。</p>
+  <p>ようこそ、<?php print h(($user['name'])); ?>さん。</p>
 </header>

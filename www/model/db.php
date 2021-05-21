@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * executeの引数に配列を渡すことでsql文の?の部分の値を引数で指定すると
+ * 値がbindValueしたことと同じことになる。
+ * []値を入れることで配列に入れる値とみなされる。
+ */
+
 function get_db_connect(){
   // MySQL用のDSN文字列
   $dsn = 'mysql:dbname='. DB_NAME .';host='. DB_HOST .';charset='.DB_CHARSET;
@@ -16,6 +22,9 @@ function get_db_connect(){
   return $dbh;
 }
 
+/**
+ * prepareでsql文の実行準備からfetchで取得するまでを関数化している
+ */
 function fetch_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -27,23 +36,28 @@ function fetch_query($db, $sql, $params = array()){
   return false;
 }
 
+//すべての行のデータを取得
 function fetch_all_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
     $statement->execute($params);
     return $statement->fetchAll();
   }catch(PDOException $e){
-    set_error('データ取得に失敗しました。');
+    set_error('データ取得に失敗しました。'.$e);
   }
   return false;
 }
 
+
+/**
+ * sql文の実行処理を取得
+ */
 function execute_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
     return $statement->execute($params);
   }catch(PDOException $e){
-    set_error('更新に失敗しました。');
+    set_error('更新に失敗しました。'.$e);
   }
   return false;
 }

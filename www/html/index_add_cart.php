@@ -1,4 +1,7 @@
 <?php
+
+//カートに商品を追加報告ページ
+
 require_once '../conf/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'user.php';
@@ -16,6 +19,13 @@ $user = get_login_user($db);
 
 
 $item_id = get_post('item_id');
+
+//POSTから送られてきたトークンがセッションに保存されているトークンと等しいかを調べる関数
+//falseだったときにはエラー分を表示しリダイレクトでログインページに戻す
+if (is_valid_csrf_token(get_post('csrf_token')) === false) {
+  set_error('アクセスが正しくありません');
+  redirect_to(LOGIN_URL);
+}
 
 if(add_cart($db,$user['user_id'], $item_id)){
   set_message('カートに商品を追加しました。');
