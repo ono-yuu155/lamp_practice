@@ -3,7 +3,7 @@
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
-//ユーザーごとの購入明細の情報を取得
+//購入番号ごとの購入明細の情報を取得
 function user_details($db, $order_number) {
     $sql = "
     SELECT

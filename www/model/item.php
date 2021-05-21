@@ -266,3 +266,69 @@ function is_valid_item_status($status){
   }
   return $is_valid;
 }
+
+//商品新着順で取得
+function new_item($db){
+  $sql = '
+    SELECT
+      item_id, 
+      name,
+      stock,
+      price,
+      image,
+      status,
+      created
+    FROM
+      items
+    
+    WHERE status = 1
+    
+    ORDER BY created
+  ';
+    
+  return fetch_all_query($db, $sql);
+}
+
+//商品の値段が安い順に取得
+function price_is_low($db){
+  $sql = '
+    SELECT
+      item_id, 
+      name,
+      stock,
+      price,
+      image,
+      status,
+      created
+    FROM
+      items
+    
+    WHERE status = 1
+    
+    ORDER BY price
+  ';
+    
+  return fetch_all_query($db, $sql);
+}
+
+//商品の値段が高い順に取得
+function price_is_high($db){
+  $sql = '
+    SELECT
+      item_id, 
+      name,
+      stock,
+      price,
+      image,
+      status,
+      created
+    FROM
+      items
+    
+    WHERE status = 1
+    
+    ORDER BY price DESC
+  ';
+    
+  return fetch_all_query($db, $sql);
+}

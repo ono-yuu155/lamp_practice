@@ -14,12 +14,22 @@
 
   <div class="container">
     <h1>商品一覧</h1>
+    <div class="sort">
+      <form method="get" action="index_sort.php" style="text-align: right;">
+        <select name="sort">
+          <option value="new_item" <?php if ($sort === 'new_item'){print 'selected';}?>>新着順</option>
+          <option value="price_is_low" <?php if ($sort === 'price_is_low'){print 'selected';}?> >価格の安い順</option>
+          <option value="price_is_high" <?php if ($sort === 'price_is_high'){print 'selected';}?> >価格の高い順</option>
+        </select>
+        <input type="submit" value="並び替え検索">
+      </form>
+    </div>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
     <div class="card-deck">
       <div class="row">
       <!--php処理で商品一覧を表示-->
-      <?php foreach($items as $item){ ?>
+      <?php foreach($new_item as $item){ ?>
         <div class="col-6 item">
           <div class="card h-100 text-center">
             <div class="card-header">
